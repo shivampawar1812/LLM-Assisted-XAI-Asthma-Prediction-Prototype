@@ -157,7 +157,7 @@ To evaluate the reliability of generated explanations, two metrics were used.
 Measures alignment between **SHAP important features and LLM explanations**.
 
 Result:
-Fidelity = 0.619
+Fidelity = 0.667
 
 
 Meaning:  
@@ -170,7 +170,7 @@ Most important features identified by SHAP are mentioned in the explanation.
 Measures **consistency of explanations across multiple runs**.
 
 Result:
-Entropy = 0.346
+Entropy = 0.25
 
 
 Interpretation:  
