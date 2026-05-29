@@ -41,13 +41,14 @@ Explainability Evaluation
 
 # Dataset
 
-### Dataset Used
+## Dataset Source
 
-Asthma Health Dataset
+The dataset used in this prototype was obtained from Kaggle:
 
-### Source
+Dataset: *Asthma synthetic medical dataset*
+Source: [https://www.kaggle.com/](https://www.kaggle.com/datasets/miadul/asthma-synthetic-medical-dataset)
 
-Kaggle
+> Note: The dataset is synthetic/simulated in nature and is used in this repository for exploratory research and explainability experimentation purposes only.
 
 ### Dataset Characteristics
 
