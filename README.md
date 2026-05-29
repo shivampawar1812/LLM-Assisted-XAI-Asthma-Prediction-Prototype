@@ -77,27 +77,65 @@ Source: [https://www.kaggle.com/](https://www.kaggle.com/datasets/miadul/asthma-
 
 ---
 
-# Machine Learning Model
+# Machine Learning Models Evaluated
 
-## Model Used
+Multiple machine learning models were evaluated for asthma prediction performance.
 
-Support Vector Machine (SVM)
+## Model Accuracy Comparison
 
-## Configuration
+| Model                     | Accuracy |
+| ------------------------- | -------- |
+| Logistic Regression       | 0.8560   |
+| Decision Tree             | 0.9987   |
+| Random Forest             | 0.9970   |
+| Naive Bayes               | 0.8604   |
+| K-Nearest Neighbors (KNN) | 0.8567   |
+| XGBoost                   | 0.9997   |
+| Gradient Boosting         | 0.9993   |
+| Optimized SVM             | 0.9829   |
 
-```python
-SVC(
-    kernel='rbf',
+---
+
+## Best Predictive Performance
+
+XGBoost achieved the highest classification accuracy among all evaluated models.
+
+```text id="m7r9my"
+XGBoost Accuracy = 99.97%
+```
+
+However, the optimized Support Vector Machine (SVM) model was selected for explainability experiments involving SHAP and LIME.
+
+---
+
+## Why SVM Was Used for Explainability
+
+Although XGBoost achieved the highest predictive accuracy, the optimized SVM model was chosen for the explainability pipeline because:
+
+* It provided strong and stable predictive performance
+* It enabled clearer experimentation with SHAP and LIME explanations
+* The project focused on studying LLM-assisted explainability workflows rather than maximizing benchmark accuracy alone
+* The SVM model offered a simpler experimental setup for interpretability analysis
+
+---
+
+## Optimized SVM Configuration
+
+```python id="b1h9kk"
+from sklearn.svm import SVC
+
+svm_classifier_op = SVC(
     C=10,
-    probability=True
+    degree=2,
+    gamma='auto'
 )
 ```
 
-## Model Performance
+## Optimized SVM Accuracy
 
-| Metric   | Score  |
-| -------- | ------ |
-| Accuracy | 98.29% |
+```text id="v6vk2q"
+Accuracy = 98.29%
+```
 
 > Note: The dataset used in this prototype is synthetic/simulated in nature. Therefore, the reported performance should not be interpreted as clinically representative.
 
