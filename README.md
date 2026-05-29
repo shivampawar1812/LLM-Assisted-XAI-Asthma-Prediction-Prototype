@@ -1,237 +1,280 @@
-# LLMs as Explainability Layer for ML-Based Asthma Prediction Model
+# LLM-Assisted Explainable Asthma Prediction Framework Prototype
 
-An **Explainable AI framework for asthma prediction** that integrates **Machine Learning, SHAP explainability, and Large Language Models (LLMs)** to generate **human-readable explanations**.
+An exploratory Explainable AI (XAI) framework for asthma prediction that combines Machine Learning, SHAP explainability, and Large Language Models (LLMs) to generate human-readable interpretations of model predictions.
 
-This project demonstrates how **black-box ML predictions can be transformed into interpretable insights**, improving transparency in healthcare AI systems.
-
----
-
-## Project Overview
-
-Asthma affects millions of people worldwide, yet many machine learning models used for prediction behave like **black boxes**, making their decisions difficult to interpret.
-
-This project introduces a system that:
-
-- Predicts asthma risk using **Machine Learning**
-- Explains predictions using **SHAP feature attribution**
-- Converts technical explanations into **natural language using an LLM**
-
-The goal is to **improve trust and interpretability in AI-based healthcare systems**.
+This repository represents an early-stage prototype exploring how explainability techniques and LLMs can improve the interpretability of healthcare-oriented machine learning workflows.
 
 ---
 
-## Architecture
-Dataset → ML Model (SVM) → SHAP Feature Attribution → LLM Explanation → Human-Readable Output
+# Overview
 
-1. Dataset is processed and fed into a trained **SVM model**
-2. **SHAP values** identify feature importance for each prediction
-3. Feature explanations are sent to a **Large Language Model**
-4. The LLM generates a **simple natural language explanation**
+Machine learning models can achieve strong predictive performance in healthcare tasks, but their predictions are often difficult to interpret for non-technical users.
+
+This project explores a multi-stage explainability pipeline that:
+
+* Predicts asthma-related outcomes using a Support Vector Machine (SVM)
+* Identifies influential features using SHAP (SHapley Additive Explanations)
+* Converts technical feature attributions into structured natural language explanations using an LLM
+* Evaluates explanation quality using fidelity and entropy-based metrics
+
+The primary goal of this work is to investigate methods for improving interpretability and transparency in AI-assisted healthcare prediction systems.
 
 ---
 
-## Dataset
+# System Pipeline
 
-- **Dataset:** Asthma Health Dataset  
-- **Source:** Kaggle  
-- **Total Records:** 10,000  
-- **Features:** 14  
+```text
+Data Processing
+      ↓
+Feature Engineering
+      ↓
+SVM Prediction Model
+      ↓
+SHAP Feature Attribution
+      ↓
+LLM-Based Explanation Generation
+      ↓
+Explainability Evaluation
+```
+
+---
+
+# Dataset
+
+### Dataset Used
+
+Asthma Health Dataset
+
+### Source
+
+Kaggle
+
+### Dataset Characteristics
+
+* Total Records: 10,000
+* Total Features: 14
 
 ### Example Features
 
-- Age  
-- Gender  
-- BMI  
-- Smoking History  
-- Family History  
-- Air Pollution Level  
-- Physical Activity  
-- Comorbidities  
-- ER Visits  
-- Peak Expiratory Flow  
+* Age
+* Gender
+* BMI
+* Smoking History
+* Family History
+* Air Pollution Level
+* Physical Activity
+* Comorbidities
+* ER Visits
+* Peak Expiratory Flow
 
 ### Target Variable
-Has Asthma
-0 → No
-1 → Yes
 
-
----
-
-## Machine Learning Model
-
-**Model Used:** Support Vector Machine (SVM)
-
-Configuration:
-Kernel = RBF
-C = 10
-Probability = True
-
-
-
-**Model Accuracy:**  
-**98.29%**
+| Value | Meaning   |
+| ----- | --------- |
+| 0     | No Asthma |
+| 1     | Asthma    |
 
 ---
 
-## Explainable AI Methods
+# Machine Learning Model
 
-To understand the model's predictions, we used:
+## Model Used
 
-### SHAP (SHapley Additive Explanations)
+Support Vector Machine (SVM)
 
-SHAP identifies **which features contributed most to the prediction**.
+## Configuration
 
-Benefits:
+```python
+SVC(
+    kernel='rbf',
+    C=10,
+    probability=True
+)
+```
 
-- Local explanation per patient
-- Quantitative feature attribution
-- Model interpretability
+## Model Performance
 
----
+| Metric   | Score  |
+| -------- | ------ |
+| Accuracy | 98.29% |
 
-## LLM-Based Explanation Generation
-
-Technical explanations from SHAP can still be difficult for non-technical users.
-
-Therefore we used:
-
-**LLM Model:** Mistral Large
-
-The LLM converts SHAP feature contributions into **human-readable explanations**.
-
-Example explanation style:
-
-> **Understanding Your Asthma Risk Estimate**
-
-1. **Key Factors**
-The following patient characteristics had the strongest influence on your estimated asthma risk:
-- Current or past smoking
-- Level of physical activity
-- Presence of allergies
-- Family history of asthma (which slightly lowered the risk)
-- Air pollution exposure (which slightly lowered the risk)
-- Body weight (which slightly lowered the risk)
-
-2. **Why These Factors Matter**
-- **Smoking**: Smoking irritates the airways, making them more sensitive and prone to inflammation. Over time, this can increase the likelihood of breathing difficulties and asthma-like symptoms.
-- **Physical Activity Level**: While regular activity is generally healthy, lower physical activity levels may be linked to weaker lung function or other health conditions that could contribute to breathing challenges.
-- **Allergies**: Allergies can trigger inflammation in the airways, making them more reactive and increasing the chance of asthma symptoms.
-- **Family History**: A family history of asthma can suggest a genetic tendency toward the condition, though in your case, this factor slightly reduced the estimated risk.
-
-3. **What This Means**
-Your estimated risk for asthma-related concerns is **higher than average**. This means that based on the factors above, you may have a greater chance of experiencing breathing difficulties or asthma symptoms. However, this is **not a diagnosis**—it is an estimate based on the information provided. Only a healthcare professional can evaluate your symptoms and determine if further assessment is needed.
-
-4. **General Health Considerations**
-- Avoiding smoking and secondhand smoke may help reduce airway irritation.
-- Managing allergies (e.g., reducing exposure to triggers) could support lung health.
-- Maintaining a healthy weight and staying physically active may benefit overall breathing and well-being.
-- Monitoring air quality and minimizing exposure to pollutants may also be helpful.
-
+> Note: The dataset used in this prototype is synthetic/simulated in nature. Therefore, the reported performance should not be interpreted as clinically representative.
 
 ---
 
-## Prompt Design
+# Explainability Methods
 
-The prompt used for the LLM follows a structured reasoning format:
+## SHAP-Based Feature Attribution
 
-1. Identify the key factors influencing the prediction  
-2. Explain how these factors affect asthma risk  
-3. Interpret the predicted risk level  
-4. Provide general health considerations  
+SHAP (SHapley Additive Explanations) is used to identify which features contribute most strongly to individual predictions.
 
-### Safety Constraints
+### Benefits
 
-- No mention of machine learning algorithms  
-- No medical diagnosis  
-- Use simple and understandable language  
+* Local explanation for individual predictions
+* Quantitative feature attribution
+* Improved model interpretability
+* Visualization of feature influence
 
 ---
 
-## Explainability Evaluation
+# LLM-Assisted Explanation Generation
 
-To evaluate the reliability of generated explanations, two metrics were used.
+Technical SHAP outputs can be difficult for non-technical users to interpret directly.
 
-### Fidelity
+To improve readability, SHAP feature contributions are transformed into structured natural language explanations using a Large Language Model.
 
-Measures alignment between **SHAP important features and LLM explanations**.
+## LLM Used
 
-Result:
-Fidelity = 0.667
+* Mistral Large
 
+## Example Explanation Style
 
-Meaning:  
-Most important features identified by SHAP are mentioned in the explanation.
+```text
+Illustrative Interpretation of Model Prediction
 
----
+The prediction was primarily influenced by:
 
-### Entropy
+• Smoking history
+• Physical activity level
+• Presence of allergies
+• Family history of asthma
+• Air pollution exposure
 
-Measures **consistency of explanations across multiple runs**.
+The generated explanation summarizes how these
+features contributed to the prediction in simplified
+natural language.
+```
 
-Result:
-Entropy = 0.25
-
-
-Interpretation:  
-Low entropy indicates **stable and consistent explanations**.
-
----
-
-## Technologies Used
-
-- Python  
-- Scikit-learn  
-- SHAP  
-- Pandas  
-- NumPy  
-- Mistral Large (LLM)  
-- Jupyter Notebook  
+> The generated explanation is intended for interpretability research purposes only and should not be considered medical advice or diagnosis.
 
 ---
 
-## Repository Structure
+# Prompt Design Strategy
 
-project
+The prompting framework follows a structured reasoning approach designed to:
+
+* Identify influential SHAP features
+* Explain feature influence in simple language
+* Summarize overall prediction reasoning
+* Maintain non-diagnostic wording
+
+## Safety Constraints
+
+* No medical diagnosis generation
+* No treatment recommendations
+* Avoidance of authoritative clinical language
+* Simplified explanation style for readability
+
+---
+
+# Explainability Evaluation
+
+To evaluate explanation quality and consistency, two evaluation metrics were explored.
+
+## Fidelity
+
+Measures alignment between SHAP-important features and features referenced in generated explanations.
+
+| Metric   | Score |
+| -------- | ----- |
+| Fidelity | 0.667 |
+
+Interpretation:
+A majority of influential SHAP features were reflected in generated explanations.
+
+---
+
+## Entropy
+
+Measures variation and consistency across repeated explanation generations.
+
+| Metric  | Score |
+| ------- | ----- |
+| Entropy | 0.25  |
+
+Interpretation:
+Lower entropy indicates relatively stable explanation generation across repeated runs.
+
+---
+
+# Repository Structure
+
+```text
+Explainable-Asthma-Prediction/
 │
-<br>
-├── asthma_dataset.csv
-<br>
-├── asthma_prediction_model.ipynb
-<br>
-├── shap_explainability.py
-<br>
-├── llm_explanation_generator.py
-<br>
-├── evaluation_metrics.py
-<br>
+├── Asthma_Model_notebook.ipynb
 └── README.md
-
-
-
----
-
-## Key Contributions
-
-- Asthma prediction using **SVM**
-- Feature attribution using **SHAP**
-- Natural language explanations using **LLM**
-- Reliability evaluation using **Fidelity and Entropy**
+```
 
 ---
 
-## Future Work
+# Technologies Used
 
-- Clinical validation with medical experts
-- Training on larger healthcare datasets
-- Integration into clinical decision support systems
-- Real-time patient explainability dashboards
+* Python
+* Scikit-learn
+* SHAP
+* Pandas
+* NumPy
+* Mistral Large
+* Jupyter Notebook
 
 ---
 
-## Authors
+# Installation
 
-**Shivam Pawar**  
-B.Tech Artificial Intelligence & Machine Learning  
-Manipal University Jaipur  
+Clone the repository:
 
+```bash
+git clone https://github.com/shivampawar1812/Explainable-Asthma-Prediction.git
+```
+
+Move into the project directory:
+
+```bash
+cd Explainable-Asthma-Prediction
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+# Future Improvements
+
+* Migration to real-world healthcare datasets (e.g., NHANES)
+* Comparison across multiple LLMs
+* Integration of additional explainability techniques
+* Improved explainability evaluation metrics
+* Clinical expert validation
+* Modular research pipeline implementation
+
+---
+
+# Limitations
+
+* Dataset used is synthetic/simulated and may not reflect real-world clinical distributions
+* No clinical validation has been performed
+* LLM-generated explanations may vary depending on prompt structure
+* SHAP explanations may not fully capture all model behaviors
+* The framework is intended for research exploration only
+
+---
+
+# Disclaimer
+
+This repository is an educational and research-oriented prototype.
+
+The generated explanations are produced using machine learning and large language models and should not be interpreted as medical advice, diagnosis, or treatment recommendations.
+
+Clinical decisions should always be made by qualified healthcare professionals.
+
+---
+
+# Author
+
+**Shivam Pawar**
+B.Tech Artificial Intelligence & Machine Learning
+Manipal University Jaipur
